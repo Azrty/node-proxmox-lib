@@ -172,7 +172,7 @@ module.exports = (options) => {
         });
     }
 
-    px.startContainer = (id, cb) => {
+    px.startContainer = (id, cb, parentfunc) => {
         let resp = {};
         let c = NODE.length;
         NODE.forEach(n => {
@@ -180,13 +180,13 @@ module.exports = (options) => {
                 c--
                 resp[n] = data;
                 if (c == 0) {
-                    cb(resp);
+                    cb(resp, parentfunc);
                 }
             });
         });
     }
 
-    px.stopContainer = (id, cb) => {
+    px.stopContainer = (id, cb, parentfunc) => {
         let resp = {};
         let c = NODE.length;
         NODE.forEach(n => {
@@ -194,7 +194,21 @@ module.exports = (options) => {
                 c--
                 resp[n] = data;
                 if (c == 0) {
-                    cb(resp);
+                    cb(resp, parentfunc);
+                }
+            });
+        });
+    }
+	
+	px.shutdownContainer = (id, cb, parentfunc) => {
+        let resp = {};
+        let c = NODE.length;
+        NODE.forEach(n => {
+            _get(`/nodes/${n}/lxc/${id}/status/shutdown`, 'post').then(data => {
+                c--
+                resp[n] = data;
+                if (c == 0) {
+                    cb(resp, parentfunc);
                 }
             });
         });
@@ -340,7 +354,12 @@ module.exports = (options) => {
                 if (res.statusCode == 200) {
                     success(JSON.parse(body));
                 } else {
-                    success(res.statusMessage + ' - ' + body);
+					const responsedata = {
+						status: res.statusCode,
+						message: res.statusMessage,
+						data: JSON.parse(body).data
+					}
+                    success(responsedata);
                 }
             }
         });
