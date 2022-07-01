@@ -352,10 +352,16 @@ module.exports = (options) => {
                 });
             } else {
                 if (res.statusCode == 200) {
-                    success(JSON.parse(body));
+                    const responsedata = {
+						statusCode: res.statusCode,
+						message: res.statusMessage,
+						data: JSON.parse(body).data
+					}
+					
+					success(responsedata);
                 } else {
 					const responsedata = {
-						status: res.statusCode,
+						statusCode: res.statusCode,
 						message: res.statusMessage,
 						data: JSON.parse(body).data
 					}
