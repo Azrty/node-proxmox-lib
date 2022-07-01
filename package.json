@@ -1,6 +1,6 @@
 {
     "name": "proxmox-lib",
-    "version": "1.0.17",
+    "version": "1.0.18",
     "description": "Proxmox Simple Library",
     "main": "proxmox.js",
     "scripts": {
@@ -10,7 +10,7 @@
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "https://github.com/kidandcat/node-proxmox-lib.git"
+        "url": "https://github.com/azrty/node-proxmox-lib.git"
     },
     "dependencies": {
         "request": "^2.73.0"
